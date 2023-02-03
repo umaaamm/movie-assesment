@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+class MovieNavigatePresenter: ObservableObject {
+  
+  @Published var movie: MovieEntity
+  
+  init(movie: MovieEntity) {
+    self.movie = movie
+  }
+}

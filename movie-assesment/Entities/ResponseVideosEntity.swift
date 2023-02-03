@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct ResponseVideosEntity: Codable {
+  let id: Int
+  let results: [ResultVideosEntity]
+}

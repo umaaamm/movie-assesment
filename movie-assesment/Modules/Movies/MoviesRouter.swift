@@ -6,3 +6,14 @@
 //
 
 import Foundation
+import SwiftUI
+
+class MovieListRouter {
+    func makeDetailView(for movie: MovieEntity) -> some View {
+        let viewModel = MovieDetailViewModel()
+        let interactor = MovieDetailInteractor(model: viewModel)
+        let presenter = MovieDetailPresenter(interactor: interactor)
+        presenter.fetchData(id: movie.id)
+        return MovieDetailView(presenter: presenter, dataMovie: movie)
+    }
+}

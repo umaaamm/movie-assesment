@@ -9,9 +9,18 @@ import SwiftUI
 
 @main
 struct movie_assesmentApp: App {
+    var model = MovieListViewModel()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationView {
+                MoviesView(presenter:
+                            MovieListPresenter(interactor:
+                                                MovieListInteractor(model: model)))
+                .background(Color.white
+                    .edgesIgnoringSafeArea(.all))
+                
+            }
         }
     }
+    
 }

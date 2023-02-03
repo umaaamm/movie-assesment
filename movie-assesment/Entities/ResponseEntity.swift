@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct ResponseEntity: Codable {
+  let page: Int
+  let results: [MovieEntity]
+}

@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct ResponseReviewEntity: Codable {
+    let id: Int
+    let page: Int
+    let results: [ReviewsEntity]
+}
