@@ -14,6 +14,7 @@ protocol MovieListInteractorProtocol {
     func error(for apiError: ApiError)
     func sucess(for movies: [MovieEntity])
     func fetchData() -> AnyCancellable
+    func fetchDataFromGenre(id: Int) -> AnyCancellable
 }
 
 class MovieListInteractor: ObservableObject, MovieListInteractorProtocol {
@@ -34,8 +35,21 @@ class MovieListInteractor: ObservableObject, MovieListInteractorProtocol {
         return ServicesSupport.shared.run(Router.popular)
     }
     
+    func getMovieFromGenre(id: Int)  -> AnyPublisher<ResponseEntity, ApiError>{
+        return ServicesSupport.shared.run(Router.movieGenre(id: id))
+    }
+    
     func fetchData() -> AnyCancellable{
         return self.getPopular().on(queue: .main)
+            .on(success: { [weak self] data in
+                self?.sucess(for: data.results)
+            }, failure: { [weak self] error in
+                self?.error(for: error)
+            })
+    }
+    
+    func fetchDataFromGenre(id: Int) -> AnyCancellable{
+        return self.getMovieFromGenre(id: id).on(queue: .main)
             .on(success: { [weak self] data in
                 self?.sucess(for: data.results)
             }, failure: { [weak self] error in

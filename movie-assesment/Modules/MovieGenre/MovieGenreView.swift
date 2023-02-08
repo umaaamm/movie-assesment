@@ -1,21 +1,19 @@
 //
-//  Movies.swift
+//  MovieGenreView.swift
 //  movie-assesment
 //
-//  Created by Kurniawan Gigih Lutfi Umam on 01/02/23.
+//  Created by Kurniawan Gigih Lutfi Umam on 03/02/23.
 //
 
 import SwiftUI
 import Combine
 import FetchImage
 
-struct MoviesView: View {
+struct MoviesGenreView: View {
     var cancellables: Set<AnyCancellable> = []
-    var presenter:  MovieListPresenterProtocol
-    var dataGenre: Genre
-    @State var fromGenre = false
+    var presenter:  MovieGenrePresenterProtocol
     @State private var shouldAnimate = false
-    @State var state: MoviePresenterStateEnum = .loading
+    @State var state: MovieGenrePresenterStateEnum = .loading
     var body: some View {
         VStack{
             switch state{
@@ -33,24 +31,13 @@ struct MoviesView: View {
         
         .padding([.leading,.trailing],20)
         .padding(.top,10)
-//        .navigationTitle("Movie Apps")
-//        .navigationBarHidden(true)
         .navigationBarTitle("", displayMode: .inline)
-
-        .onReceive(presenter.MoviePresenterStatePublished){ presenterState in
+//        .navigationBarHidden(true)
+        .onReceive(presenter.MovieGenrePresenterStatePublished){ presenterState in
             self.state = presenterState
-            
-            
         }
         .onAppear(){
-            
-            if(fromGenre) {
-                presenter.fetchDataFromGenre(id:dataGenre.id ?? 0 )
-                self.fromGenre = false
-                return
-            }
             presenter.fetchData()
-            self.fromGenre = false
         }
     }
     
@@ -101,17 +88,28 @@ struct MoviesView: View {
     func showListView() -> some View {
         VStack(alignment:.leading, spacing: 20){
             VStack(alignment:.leading,spacing:5){
-                Text("Movie Apps")
+                Text("Genre Apps")
                     .bold()
                     .font(.largeTitle)
                 Divider().background(Color.white)
             }
             
+            Text("Choose  Genre Movies").font(.headline).foregroundColor(Color.black)
+            
             ScrollView(showsIndicators: false){
-                ForEach(presenter.movies, id: \.self) { id in
-                    presenter.linkBuilder(for: id){
-                        MovieRow(movie: id)
-                    }
+                ForEach(presenter.moviesGenre, id: \.self) { id in
+                                        presenter.linkBuilder(for: id){
+                    
+                    HStack(alignment: .top){
+                        VStack(alignment: .leading){
+                            Text(id.name ?? "").font(.subheadline).foregroundColor(Color.black).multilineTextAlignment(.center)
+                            Spacer()
+                            Divider()
+                        }
+                    }.frame(minWidth: 0, maxWidth: .infinity,maxHeight: 180, alignment: .center)
+                    
+                    
+                }
                 }
             }
         }
@@ -119,14 +117,13 @@ struct MoviesView: View {
 }
 
 
-struct MovieList_Previews: PreviewProvider {
+struct MovieGenre_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = MovieListViewModel()
-        let interactor = MovieListTestInteractor(model: viewModel,movies: MovieEntity.fakes(quantity: 6))
-        let presenter = MovieListPresenter(interactor: interactor)
-        return MoviesView(presenter: presenter, dataGenre: Genre(id: 29, name: "action"))
+        let viewModel = MovieGenreViewModel()
+        
+        let interactor = MovieGenreInteractor(model: viewModel)
+        let presenter = MovieGenrePresenter(interactor: interactor)
+        return MoviesGenreView(presenter: presenter)
             .background(Color.white.edgesIgnoringSafeArea(.all))
     }
 }
-
-

@@ -20,6 +20,7 @@ protocol MovieListPresenterProtocol {
     var interactor: MovieListInteractorProtocol {get set}
     
     func fetchData()
+    func fetchDataFromGenre(id: Int)
     
     func linkBuilder<Content: View>(for movie: MovieEntity, @ViewBuilder content: () -> Content
     ) -> NavigationLink<Content,AnyView>
@@ -53,7 +54,6 @@ final class MovieListPresenter: MovieListPresenterProtocol {
         }
     }
     
-    
     init(interactor: MovieListInteractorProtocol) {
         self.interactor = interactor
         self.bindVariablesToModel()
@@ -61,6 +61,10 @@ final class MovieListPresenter: MovieListPresenterProtocol {
     
     func fetchData() {
         request = self.interactor.fetchData()
+    }
+    
+    func fetchDataFromGenre(id: Int) {
+        request = self.interactor.fetchDataFromGenre(id: id)
     }
     
     func linkBuilder<Content>(for movie: MovieEntity, content: () -> Content) -> NavigationLink<Content, AnyView> where Content : View {

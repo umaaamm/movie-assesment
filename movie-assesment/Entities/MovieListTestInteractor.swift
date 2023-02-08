@@ -11,6 +11,17 @@ import Combine
 import SwiftUI
 
 class MovieListTestInteractor: ObservableObject, MovieListInteractorProtocol {
+    func fetchDataFromGenre(id: Int) -> AnyCancellable {
+        return self.getPopular().on(queue: .main)
+      .on(success: { [weak self] data in
+        print(data)
+        self?.sucess(for: data.results)
+      }, failure: { [weak self] error in
+        print(error)
+        self?.error(for: error)
+      })
+    }
+    
   @Published var model: MovieListViewModel
   
   var data: ResponseEntity

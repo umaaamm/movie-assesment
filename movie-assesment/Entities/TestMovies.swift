@@ -50,6 +50,8 @@ extension MovieEntity {
                     genre: MoviesGenre.getRandom,
                     backdrop_path: "/faXT8V80JRhnArTAeYXz0Eutpv9.jpg")
     }
+    
+    
     static var getRandomTestMovie: MovieEntity { [test,test2,test3].randomElement()!}
     
     static func fakes(quantity: Int) -> [MovieEntity] {

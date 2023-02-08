@@ -109,7 +109,6 @@ struct MovieDetailView: View {
     }
     
     func showDetail() -> some View {
-        
         VStack(alignment:.leading, spacing: 8){
             VStack(alignment:.leading){
                 Text("\(dataMovie.title) (\(dataMovie.releaseYear ?? ""))")
